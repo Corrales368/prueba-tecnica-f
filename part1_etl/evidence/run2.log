@@ -1,0 +1,88 @@
+2026-11-08 22:01:05,716 INFO etl.erp_client page=1 rows=20
+2026-11-08 22:01:05,718 INFO etl.erp_client page=2 rows=20
+2026-11-08 22:01:05,720 WARNING etl.erp_client retry path=/api/v1/assets attempt=1 reason=rate limit exceeded, retry in 2s
+2026-11-08 22:01:07,724 INFO etl.erp_client page=3 rows=14
+2026-11-08 22:01:07,727 INFO etl.erp_client page=4 rows=3
+2026-11-08 22:01:07,730 INFO etl.erp_client assets read=57 x_total_count=57
+2026-11-08 22:01:07,730 INFO etl.pipeline duplicate code=EQ-007 kept_updated_at=2026-08-24T09:00:00-05:00 discarded_updated_at=2026-08-17T12:00:00-05:00
+2026-11-08 22:01:07,730 INFO etl.pipeline duplicate code=EQ-019 kept_updated_at=2026-08-24T09:00:00-05:00 discarded_updated_at=2026-08-14T12:00:00-05:00
+2026-11-08 22:01:07,730 INFO etl.pipeline duplicate code=EQ-033 kept_updated_at=2026-08-24T09:00:00-05:00 discarded_updated_at=2026-08-13T12:00:00-05:00
+2026-11-08 22:01:07,743 INFO etl.pipeline rejected code=EQ-002 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:07,744 INFO etl.pipeline rejected code=EQ-004 reasons=['status: missing']
+2026-11-08 22:01:08,094 WARNING etl.pipeline warning code=EQ-003 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,097 WARNING etl.pipeline warning code=EQ-006 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,100 INFO etl.pipeline asset code=EQ-005 result=unchanged
+2026-11-08 22:01:08,101 INFO etl.pipeline asset code=EQ-001 result=unchanged
+2026-11-08 22:01:08,104 INFO etl.pipeline asset code=EQ-003 result=unchanged
+2026-11-08 22:01:08,107 INFO etl.pipeline asset code=EQ-007 result=unchanged
+2026-11-08 22:01:08,107 INFO etl.pipeline asset code=EQ-006 result=unchanged
+2026-11-08 22:01:08,108 INFO etl.pipeline rejected code=EQ-008 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:08,111 INFO etl.pipeline rejected code=EQ-010 reasons=['status: missing']
+2026-11-08 22:01:08,113 INFO etl.pipeline rejected code=EQ-014 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:08,456 WARNING etl.pipeline warning code=EQ-009 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,460 INFO etl.pipeline asset code=EQ-009 result=unchanged
+2026-11-08 22:01:08,462 INFO etl.pipeline rejected code=EQ-016 reasons=['status: missing']
+2026-11-08 22:01:08,463 WARNING etl.pipeline warning code=EQ-012/A installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,465 WARNING etl.pipeline warning code=EQ-013 name: truncated from 83 to 50 chars
+2026-11-08 22:01:08,466 WARNING etl.pipeline warning code=EQ-015 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,468 INFO etl.pipeline asset code=EQ-011 result=unchanged
+2026-11-08 22:01:08,468 INFO etl.pipeline asset code=EQ-013 result=unchanged
+2026-11-08 22:01:08,469 INFO etl.pipeline asset code=EQ-012/A result=unchanged
+2026-11-08 22:01:08,470 INFO etl.pipeline asset code=EQ-015 result=unchanged
+2026-11-08 22:01:08,472 INFO etl.pipeline rejected code=EQ-020 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:08,474 INFO etl.pipeline rejected code=EQ-022 reasons=['status: missing']
+2026-11-08 22:01:08,476 INFO etl.pipeline rejected code=EQ-023 reasons=["parent_location: 'LOC-Z' not in catalog"]
+2026-11-08 22:01:08,824 WARNING etl.pipeline warning code=EQ-018 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,825 INFO etl.pipeline asset code=EQ-017 result=unchanged
+2026-11-08 22:01:08,826 WARNING etl.pipeline warning code=EQ-021 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,829 INFO etl.pipeline asset code=EQ-019 result=unchanged
+2026-11-08 22:01:08,829 WARNING etl.pipeline warning code=EQ-024 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:08,830 INFO etl.pipeline asset code=EQ-018 result=unchanged
+2026-11-08 22:01:08,831 INFO etl.pipeline asset code=EQ-021 result=unchanged
+2026-11-08 22:01:08,832 INFO etl.pipeline rejected code=EQ-026 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:08,833 INFO etl.pipeline asset code=EQ-024 result=unchanged
+2026-11-08 22:01:08,834 INFO etl.pipeline rejected code=EQ-028 reasons=['status: missing']
+2026-11-08 22:01:08,839 INFO etl.erp_client token refreshed
+2026-11-08 22:01:09,184 WARNING etl.pipeline warning code=EQ-027 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,185 INFO etl.pipeline asset code=EQ-025 result=unchanged
+2026-11-08 22:01:09,186 INFO etl.pipeline asset code=EQ-027 result=unchanged
+2026-11-08 22:01:09,188 INFO etl.pipeline rejected code=EQ-032 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:09,190 INFO etl.pipeline rejected code=EQ-034 reasons=['status: missing']
+2026-11-08 22:01:09,191 INFO etl.pipeline asset code=EQ-029 result=unchanged
+2026-11-08 22:01:09,194 WARNING etl.pipeline warning code=EQ-030 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,196 INFO etl.pipeline asset code=EQ-030 result=unchanged
+2026-11-08 22:01:09,197 INFO etl.pipeline asset code=EQ-031/B result=unchanged
+2026-11-08 22:01:09,199 INFO etl.pipeline rejected code=EQ-038 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:09,541 WARNING etl.pipeline warning code=EQ-033 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,545 WARNING etl.pipeline warning code=EQ-036 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,546 INFO etl.pipeline asset code=EQ-033 result=unchanged
+2026-11-08 22:01:09,547 INFO etl.pipeline asset code=EQ-036 result=unchanged
+2026-11-08 22:01:09,548 INFO etl.pipeline asset code=EQ-035 result=unchanged
+2026-11-08 22:01:09,550 INFO etl.pipeline rejected code=EQ-040 reasons=['status: missing']
+2026-11-08 22:01:09,551 INFO etl.pipeline rejected code=EQ-041 reasons=["parent_location: 'LOC-Z' not in catalog"]
+2026-11-08 22:01:09,552 WARNING etl.pipeline warning code=EQ-039 name: truncated from 83 to 50 chars
+2026-11-08 22:01:09,552 WARNING etl.pipeline warning code=EQ-039 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,554 INFO etl.pipeline asset code=EQ-037 result=unchanged
+2026-11-08 22:01:09,555 INFO etl.pipeline rejected code=EQ-044 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:09,556 INFO etl.pipeline asset code=EQ-039 result=unchanged
+2026-11-08 22:01:09,557 INFO etl.pipeline rejected code=EQ-046 reasons=['status: missing']
+2026-11-08 22:01:09,905 WARNING etl.pipeline warning code=EQ-042 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,907 WARNING etl.pipeline warning code=EQ-045/C installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,908 INFO etl.pipeline asset code=EQ-042 result=unchanged
+2026-11-08 22:01:09,909 INFO etl.pipeline asset code=EQ-043 result=unchanged
+2026-11-08 22:01:09,911 WARNING etl.pipeline warning code=EQ-048 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:09,912 INFO etl.pipeline asset code=EQ-045/C result=unchanged
+2026-11-08 22:01:09,914 INFO etl.pipeline rejected code=EQ-050 reasons=['acquisition_cost: missing']
+2026-11-08 22:01:09,915 INFO etl.pipeline asset code=EQ-047 result=unchanged
+2026-11-08 22:01:09,916 INFO etl.pipeline asset code=EQ-048 result=unchanged
+2026-11-08 22:01:09,917 INFO etl.pipeline rejected code=EQ-052 reasons=['status: missing']
+2026-11-08 22:01:10,266 WARNING etl.pipeline warning code=EQ-051 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:10,270 WARNING etl.pipeline warning code=EQ-054 installed_at: no timezone, assumed -05:00
+2026-11-08 22:01:10,270 INFO etl.pipeline asset code=EQ-051 result=unchanged
+2026-11-08 22:01:10,271 INFO etl.pipeline asset code=EQ-049 result=unchanged
+2026-11-08 22:01:10,272 INFO etl.pipeline asset code=EQ-053 result=unchanged
+2026-11-08 22:01:10,273 INFO etl.pipeline asset code=EQ-054 result=unchanged
+2026-11-08 22:01:10,275 INFO etl.pipeline summary run_id=2 read=57 unique=54 duplicates=3
+2026-11-08 22:01:10,276 INFO etl.pipeline summary transformed=34 inserted=0 updated=0 unchanged=34
+2026-11-08 22:01:10,276 INFO etl.pipeline summary rejected=20 reasons_by_field={'acquisition_cost': 9, 'status': 9, 'parent_location': 2}
+2026-11-08 22:01:10,277 INFO etl.pipeline summary failed=0 warnings_by_field={'installed_at': 18, 'name': 2} seconds=4.62

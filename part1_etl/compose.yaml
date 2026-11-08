@@ -1,0 +1,49 @@
+services:
+  db:
+    # 17, not 18: the 18 image changed the data volume path.
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?missing .env (copy .env.example to .env)}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?missing .env (copy .env.example to .env)}"
+      POSTGRES_DB: "${POSTGRES_DB:?missing .env (copy .env.example to .env)}"
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  mock:
+    image: python:3.12-slim
+    command: ["python", "/mock/server.py"]
+    ports:
+      - "127.0.0.1:${MOCK_HOST_PORT:-8099}:8099"
+    environment:
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./mock:/mock:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8099), 2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  etl:
+    # Not started by "docker compose up"; each run: docker compose run --rm etl
+    profiles: ["etl"]
+    build: .
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+      mock:
+        condition: service_healthy
+    volumes:
+      - ./evidence:/app/evidence
+
+volumes:
+  pgdata:

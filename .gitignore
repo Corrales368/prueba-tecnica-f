@@ -219,13 +219,13 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# --- Agregado para la prueba tecnica ---
-# Editores / SO
+# --- Added for the technical test ---
+# Editors / OS
 .vscode/
 .idea/
 Thumbs.db
 .DS_Store
 
-# La plantilla de arriba ignora *.log, pero los logs de las corridas son
-# evidencia obligatoria de la entrega: se versionan los de evidencias/.
-!evidencias/*.log
+# The template above ignores *.log, but the run logs are mandatory evidence
+# for the delivery: the ones in part1_etl/evidence/ are committed.
+!part1_etl/evidence/*.log

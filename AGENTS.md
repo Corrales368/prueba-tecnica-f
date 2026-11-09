@@ -2,12 +2,15 @@
 
 Context for an AI agent (or a person) who has to run this project without its author:
 start the ERP mock, run the full process, and tell a correct result from an incorrect one.
+Part 2's tests are covered too.
 
 ## What this repo is
 
 Technical test for a Python integrations role, one folder per part:
 
 ```
+REPORT.md / REPORT.pdf       the report (in Spanish): Part 1 data problems, Parts 2 and 3,
+                             AI usage. The PDF is an export of REPORT.md, which is the source
 part1_etl/                   Part 1: async ETL, ERP (mock) -> Postgres. Runs with Docker.
   compose.yaml               services: db (Postgres), mock (ERP), etl (runs on demand)
   etl/                       the ETL (Python package)
@@ -22,7 +25,13 @@ part1_etl/                   Part 1: async ETL, ERP (mock) -> Postgres. Runs wit
   tests/                     pytest (transformation rules)
   verify.py                  checks the database: prints RESULT: CORRECT / INCORRECT
   evidence/                  logs of two consecutive runs + database dump
-part2_transform_registry/    Part 2: code review
+part2_transform_registry/    Part 2: review of code running in production
+  transform_registry_2.py    the original, as delivered (unmodified)
+  transform_registry.py      the hotfix: no eval, only registered operations
+  tests/                     pytest: same outputs as the original, attacks rejected
+  compose.yaml               one service, tests
+part3_architecture_review/   Part 3: the review itself is in REPORT.md
+  diagram.md / diagram.png   the proposal with the review's comments marked (Mermaid + export)
 ```
 
 ## Part 1
@@ -170,8 +179,33 @@ DB_HOST_PORT=15433
   It keeps `.env`, the base images (`postgres:17-alpine`, `python:3.12-slim`) and
   Docker's build cache.
 
+## Part 2
+
+No `.env` and no ports needed. From the repository root:
+
+```
+docker compose --project-directory part2_transform_registry run --rm --build tests
+```
+
+Correct: the last line is `35 passed` (exit code 0). Any `failed` or `error` is incorrect.
+
+Optional, to see the fix by hand (from `part2_transform_registry/`):
+
+```
+docker compose run --rm tests python transform_registry.py suma 1 2               # 3.0
+docker compose run --rm tests python transform_registry_2.py "os.getcwd()" 1 2    # original: /app (it ran code)
+docker compose run --rm tests python transform_registry.py "os.getcwd()" 1 2      # fix: OperationNotAllowed, exit 1
+```
+
+## Part 3
+
+Nothing to run: the review is the "Punto 3" section of `REPORT.md`, and
+`part3_architecture_review/diagram.md` draws the proposal with the review's codes (a1, b2...).
+
 ## Rules for agents
 
 - Do not modify `part1_etl/mock/mock_erp_2.py` or `part2_transform_registry/transform_registry_2.py`:
   they are the original material of the test.
 - Do not edit files in `part1_etl/evidence/` by hand; regenerate them with the commands above.
+- Do not edit `REPORT.pdf` or `part3_architecture_review/diagram.png` by hand: they are exports of
+  `REPORT.md` and `diagram.md`.

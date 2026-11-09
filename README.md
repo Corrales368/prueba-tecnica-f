@@ -24,6 +24,8 @@ docker compose run --rm etl python verify.py    # must end with RESULT: CORRECT
 
 This quick start reuses the database if one already exists. For a clean start, the
 expected numbers of each run and troubleshooting, follow [AGENTS.md](AGENTS.md).
+If another copy of this repo exists on this machine, read "Two copies on one machine" in
+AGENTS.md first: both copies would share containers and the database.
 Evidence of two consecutive runs and the database dump: [part1_etl/evidence/](part1_etl/evidence/).
 
 ## Part 2 quick start

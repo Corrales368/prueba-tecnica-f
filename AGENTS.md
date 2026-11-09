@@ -60,8 +60,8 @@ repository root as `docker compose --project-directory part1_etl ...` instead
 2. Start from a clean database. **This deletes the database volume of this Compose project.**
    The project name is the folder name (`part1_etl`), so any other copy of this repo on the
    same machine, running or stopped, shares that volume. To check whether one exists:
-   `docker volume ls --filter name=part1_etl_pgdata`. If it lists a volume that is not
-   from this copy, see "Two copies on one machine" below first.
+   `docker volume ls --filter name=part1_etl_pgdata`. On a fresh checkout, any volume it
+   lists belongs to another copy: see "Two copies on one machine" below first.
    ```
    docker compose down -v
    ```
@@ -123,6 +123,7 @@ The mock simulates a real, unreliable ERP. Every correct run logs these lines:
 | `INFO ... rejected code=... reasons=[...]` (20 lines) | Null status, null cost or unknown location (LOC-Z): stored in `rejected_assets` with the reason; the batch goes on |
 | `WARNING ... installed_at: no timezone, assumed -05:00` (18 lines) | Dates like `13/04/2026` come without time zone; every other date of this ERP is -05:00 |
 | `WARNING ... name: truncated from 83 to 50 chars` (2 lines) | The contract allows 50 characters; the truncation is recorded |
+| `WARNING: Running pip as the 'root' user ...` (only while building the image) | pip's advice for regular machines; inside the container it does not matter |
 
 The number of retry and `token refreshed` lines depends on timing: any number is fine as
 long as the summary matches. Judge the result with `verify.py` and the tables above, not by
@@ -151,8 +152,9 @@ the absence of WARNING lines.
 
 Copies of this repo whose folder has the same name (`part1_etl`) share one Compose project:
 containers, database volume, network and ETL image (`--build` in one copy replaces the
-other's image). To isolate one copy, add these lines to its `.env` before step 2; all of
-those names then derive from `part1_etl_check`:
+other's image). To isolate one copy, edit its `.env` before step 2: change the two ports,
+which are already there, and add the project name. All of those names then derive from
+`part1_etl_check`:
 
 ```
 COMPOSE_PROJECT_NAME=part1_etl_check
@@ -162,7 +164,7 @@ DB_HOST_PORT=15433
 
 ### Other commands
 
-- Tests: `docker compose run --rm etl pytest`
+- Tests: `docker compose run --rm etl pytest` (correct: `28 passed`, exit code 0)
 - Regenerate the evidence in `evidence/`:
   ```
   docker compose down -v
@@ -181,21 +183,31 @@ DB_HOST_PORT=15433
 
 ## Part 2
 
-No `.env` and no ports needed. From the repository root:
+No `.env` and no ports needed. Every Part 2 command runs from the repository root:
 
 ```
 docker compose --project-directory part2_transform_registry run --rm --build tests
 ```
 
-Correct: the last line is `35 passed` (exit code 0). Any `failed` or `error` is incorrect.
+Correct: the last line contains `35 passed` (exit code 0). Any `failed` or `error` is incorrect.
 
-Optional, to see the fix by hand (from `part2_transform_registry/`):
+Optional, to see the fix by hand (after the command above, which builds the image):
 
 ```
-docker compose run --rm tests python transform_registry.py suma 1 2               # 3.0
-docker compose run --rm tests python transform_registry_2.py "os.getcwd()" 1 2    # original: /app (it ran code)
-docker compose run --rm tests python transform_registry.py "os.getcwd()" 1 2      # fix: OperationNotAllowed, exit 1
+docker compose --project-directory part2_transform_registry run --rm tests python transform_registry.py suma 1 2
+docker compose --project-directory part2_transform_registry run --rm tests python transform_registry_2.py "os.getcwd()" 1 2
+docker compose --project-directory part2_transform_registry run --rm tests python transform_registry.py "os.getcwd()" 1 2
 ```
+
+Expected, in order: `3.0`; `/app` (the original ran the code it was sent); and a traceback ending
+in `OperationNotAllowed: operation not allowed: 'os.getcwd()'`, exit code 1 (the fix rejects it).
+
+If another copy of this repo exists on the same machine, both share the image
+`part2_transform_registry-tests`: add `-p part2_transform_registry_check` right after
+`docker compose` in every Part 2 command.
+
+Remove the image when done: `docker image rm part2_transform_registry-tests`
+(`part2_transform_registry_check-tests` if you used `-p`).
 
 ## Part 3
 

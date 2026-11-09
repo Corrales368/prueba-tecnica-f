@@ -124,3 +124,36 @@ que se van a romper en producción. Entre paréntesis, el componente de la propu
   con retención y cifrado.
 - **d5. Un piloto, o mejor un laboratorio,** con criterios de éxito y varios clientes simulados: lo que se
   rompe (a2, b3, c4) aparece con muchos clientes, no con uno.
+
+## Uso de la IA
+
+Usé Claude Code (modelo Claude Opus) durante toda la prueba.
+
+**Para qué:**
+
+- Sondear la API del mock con un script y leer su código: la primera lista de problemas de datos la
+  armó la IA; yo la comprobé con Postman y en la base.
+- Generar el código del ETL bloque por bloque: para cada bloque me proponía un plan con decisiones y yo
+  lo aprobaba antes de que escribiera código. También `verify.py`, los tests y AGENTS.md, que probó con
+  dos agentes en sesión limpia.
+- P2: encontrar los problemas y escribir el hotfix y los tests. El alcance (hotfix mínimo, mantener las
+  compuestas, no renombrar) lo decidí yo.
+- P3: me propuso críticas que discutí una por una y reescribí con mi criterio.
+- Redactar este reporte a partir de mis opiniones.
+
+**Qué generó mal y cómo lo detecté:**
+
+| Error de la IA | Cómo lo detecté |
+|---|---|
+| Dijo que el token vivía 200 s; son 20 | Leí el código del mock (`TOKEN_TTL = 20`) |
+| Docker: un `compose.yaml` que no parseaba, una contraseña cambiada sin borrar el volumen y un `up` que corría el ETL antes de que existiera | Al ejecutarlo: fallos de `docker compose`, de autenticación y `No module named etl.__main__` |
+| Sobreingeniería: validaciones innecesarias, archivos que no pedí, exceso de comentarios y decisiones tomadas sin consultarme | Revisando el código. Desde ahí trabajamos así: plan, mi aprobación y recién después código |
+| Un nombre de proyecto Compose fijo: todas las copias compartían base y contenedores | La prueba en sesión limpia |
+| Un comentario inexacto sobre `literal_eval`, comentarios en español en el P2 y encabezados decorativos en los tests | Revisando el código |
+| P3: dijo que el polling incremental resolvía el problema 1 (el enunciado dice lo contrario), asumió un modelo multitenant y mezcló contexto del P1 y el P2 | Mis preguntas: cuál de los tres modelos multitenant usa Fracttal, y que el P3 se juzga solo con su contexto |
+
+**Qué no le delegué:** las decisiones (Docker y Postgres fueron idea mía; las reglas de rechazo y la
+zona -05:00 las propuso la IA con su recomendación y las decidí yo; la estructura de carpetas; las
+críticas del P3 que salen de mi experiencia), la verificación (ejecuté las corridas, revisé la base con
+DBeaver y psql, hice peticiones al mock con Postman y leí el código del ETL) y los commits. No pegué
+credenciales reales: solo las ficticias del mock.

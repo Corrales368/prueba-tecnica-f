@@ -1,6 +1,33 @@
 # Reporte · Prueba técnica Python Developer de Integraciones
 
-Santiago Corrales
+## Punto 1 · Problemas de datos
+
+Los encontré perfilando las respuestas de la API (valores distintos por campo, largos, formatos),
+cuadrando conteos contra `X-Total-Count` y leyendo el código del mock. En un ERP real no tendría ese
+código: lo que sí sirve igual es perfilar y cuadrar.
+
+| Problema | Cómo lo detecté | Qué decidí |
+|---|---|---|
+| `status` llega como "1", "0", "Activo", "Inactivo" o vacío | Valores distintos del campo | Mapeo explícito; vacío o desconocido se rechaza (9). Inventar un booleano es peor que no cargarlo |
+| `acquisition_cost` como texto latino ("1.234,56"), número o vacío | Perfilado | En el texto, "." son miles y "," el decimal; `Decimal` a 2 decimales, redondeo half-up. Vacío se rechaza (9) |
+| `installed_at` mezcla ISO con -05:00 y "13/04/2026" sin hora ni zona (18) | Perfilado; 13 y 16 no pueden ser meses, así que es día/mes | Asumo -05:00, la zona de todas las demás fechas del ERP; paso a UTC y dejo un aviso |
+| Nombres de 83 caracteres; el contrato admite 50 | Largo en el perfilado | Trunco y lo registro en el log y en `warnings` (2; los otros 2 ya venían rechazados) |
+| `LOC-Z` no existe en el catálogo | Cruce con `/locations` | Rechazo sin pedir lecturas (2), como dice el contrato |
+| La página 4 repite 3 activos con un `updated_at` más nuevo | 57 leídos contra 54 códigos únicos | Me quedo con el más reciente y registro cada duplicado |
+| Códigos con "/" (EQ-012/A…) | Sus lecturas daban 404 | Codifico el código en la URL; si no, eran rechazos falsos |
+| La página 3 responde 200 con un error en el cuerpo y `data` vacía | Con "data vacía = fin" se perdían 17 activos sin ninguna excepción | Lo trato como error reintentable, pagino hasta una página vacía sin error y cuadro contra `X-Total-Count` |
+
+Todo rechazo queda en `rejected_assets` con su motivo y el lote sigue. Si un activo ya cargado llega
+inválido, conservo su última versión válida; si vuelve a ser válido, sale de rechazados.
+
+**Lo que sospecho que quedó sin encontrar:**
+
+- Un costo en texto con formato estadounidense ("1234.56") se leería como 123456, cien veces más, sin
+  ningún error. Asumo formato latino en todo el texto porque así llegó todo. Es la que más me preocupa.
+- La zona -05:00 es una suposición: si esas fechas son de otra zona, quedan corridas unas horas.
+- Las lecturas no se validan: un medidor que baja, un valor negativo o una fecha futura se cargan igual.
+- Si el ERP borra un activo, aquí sigue: la carga inserta y actualiza, pero nunca elimina.
+- Un mismo código con espacios o con otras mayúsculas se guardaría como otro activo.
 
 ## Punto 2 · Revisión de `transform_registry.py`
 
